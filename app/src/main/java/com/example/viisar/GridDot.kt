@@ -17,6 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.viisar.ui.theme.AccentTeal
 import com.example.viisar.ui.theme.CardDark
+import com.example.viisar.ui.theme.SoftOrange
+import com.example.viisar.ui.theme.SurfaceLight
 import com.example.viisar.ui.theme.VIISARTheme
 
 @Composable
@@ -26,10 +28,10 @@ fun GridDot(
 ) {
     Box(
         modifier = Modifier
-            .size(44.dp)
+            .size(GRID_DOT_SIZE)
             .clip(CircleShape)
             .background(
-                if (isActive) AccentTeal else CardDark
+                if (isActive) SoftOrange else SurfaceLight
             )
             .clickable { onClick() },
         contentAlignment = Alignment.Center
