@@ -4,29 +4,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorScheme = darkColorScheme(
-    primary = AccentTeal,
-    secondary = AccentTealSoft,
-    background = BackgroundDark,
-    surface = SurfaceDark,
-    onPrimary = Color.Black,
-    onBackground = TextPrimary,
-    onSurface = TextPrimary
+private val LightColorScheme = lightColorScheme(
+    primary = OrangePrimary,
+    secondary = OrangeSecondary,
+    background = BackgroundLight,
+    surface = SurfaceLight,
+    onPrimary = Color.White,
+    onBackground = TextDark,
+    onSurface = TextDark
 )
 
 @Composable
 fun VIISARTheme(
-    darkTheme: Boolean = true,   // 🔥 FORCE DARK
+    darkTheme: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) {
-        DarkColorScheme
-    } else {
-        DarkColorScheme   // 👈 force dark even in light mode
-    }
-
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = LightColorScheme,
         typography = Typography(),
         content = content
     )

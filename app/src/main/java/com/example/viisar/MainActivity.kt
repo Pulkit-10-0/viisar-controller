@@ -125,86 +125,86 @@ class MainActivity : ComponentActivity() {
                         }
 
                     }
-                    }
                 }
             }
         }
     }
+}
 
-    @Composable
-    fun ConnectScreen(
-        onWifiClick: () -> Unit,
-        onBleClick: () -> Unit
+@Composable
+fun ConnectScreen(
+    onWifiClick: () -> Unit,
+    onBleClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Text(
+            text = "Connect Device",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "Choose your connection method",
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        ConnectionCard(
+            title = "WiFi",
+            subtitle = "Connect via wireless network",
+            onClick = onWifiClick
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        ConnectionCard(
+            title = "Bluetooth",
+            subtitle = "Connect via Bluetooth",
+            onClick = onBleClick
+        )
+    }
+}
+
+@Composable
+fun ConnectionCard(
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(90.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        )
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.Center
         ) {
-
             Text(
-                text = "Connect Device",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
             )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
             Text(
-                text = "Choose your connection method",
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            ConnectionCard(
-                title = "WiFi",
-                subtitle = "Connect via wireless network",
-                onClick = onWifiClick
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            ConnectionCard(
-                title = "Bluetooth",
-                subtitle = "Connect via Bluetooth",
-                onClick = onBleClick
+                subtitle,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
         }
     }
-
-    @Composable
-    fun ConnectionCard(
-        title: String,
-        subtitle: String,
-        onClick: () -> Unit
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp)
-                .clickable { onClick() },
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
-            )
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    title,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    subtitle,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                )
-            }
-        }
-    }
+}
