@@ -20,12 +20,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.viisar.ui.theme.VIISARTheme
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 class MainActivity : ComponentActivity() {
+
+
+    private val permissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { result ->
+
+            result.forEach { (permission, granted) ->
+                println("$permission = $granted")
+            }
+        }
+
+    private fun requestPermissions() {
+
+        val permissions = mutableListOf<String>()
+
+        // Location (WiFi + BLE scan)
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        // Android 12+ BLE permissions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
+        }
+
+        permissionLauncher.launch(permissions.toTypedArray())
+    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
+
+        installSplashScreen()
         super.onCreate(savedInstanceState)
+
+        requestPermissions()   // ✅ CALL HERE ONLY
 
         setContent {
             VIISARTheme {
@@ -33,20 +68,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                    val screenStack = remember { mutableStateListOf("connect") }
+                    val screenStack = remember { mutableStateListOf("splash") }
                     var rows by remember { mutableStateOf(5) }
                     var cols by remember { mutableStateOf(5) }
                     var mode by remember { mutableStateOf<ConnectionMode?>(null) }
 
                     val screen: String = screenStack.last()
 
-// back handling
+
                     BackHandler(enabled = screenStack.size > 1) {
                         screenStack.removeAt(screenStack.lastIndex)
                     }
 
                     when (screen) {
+                        "splash" -> SplashScreen {
+                            screenStack.add("connect")
+                        }
 
                         "connect" -> ConnectScreen(
                             onWifiClick = {
@@ -119,7 +156,10 @@ class MainActivity : ComponentActivity() {
                                             BleManager.send(msg)
 
                                         else -> {}
+
                                     }
+
+
                                 }
                             }
                         }
@@ -130,6 +170,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun ConnectScreen(
@@ -142,7 +183,9 @@ fun ConnectScreen(
             .padding(24.dp),
         verticalArrangement = Arrangement.Center
     ) {
+        LogoHeader()
 
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Connect Device",
             fontSize = 28.sp,

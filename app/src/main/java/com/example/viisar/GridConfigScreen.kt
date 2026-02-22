@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.viisar.ui.theme.AccentTeal
 import com.example.viisar.ui.theme.DividerDark
+import com.example.viisar.ui.theme.SoftOrange
 import com.example.viisar.ui.theme.TextPrimary
 import com.example.viisar.ui.theme.TextSecondary
 import com.example.viisar.ui.theme.VIISARTheme
@@ -36,7 +37,11 @@ fun GridConfigScreen(
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
+
     ) {
+        LogoHeader()
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text("Grid Configuration", fontSize = 24.sp)
         Spacer(Modifier.height(8.dp))
@@ -52,13 +57,13 @@ fun GridConfigScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.width(120.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = TextPrimary,
-                    unfocusedTextColor = TextPrimary,
-                    focusedBorderColor = AccentTeal,
-                    unfocusedBorderColor = DividerDark,
-                    cursorColor = AccentTeal,
-                    focusedLabelColor = AccentTeal,
-                    unfocusedLabelColor = TextSecondary
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedBorderColor = SoftOrange,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    cursorColor = SoftOrange,
+                    focusedLabelColor = SoftOrange,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             )
 
@@ -71,13 +76,13 @@ fun GridConfigScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.width(120.dp),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = TextPrimary,
-                    unfocusedTextColor = TextPrimary,
-                    focusedBorderColor = AccentTeal,
-                    unfocusedBorderColor = DividerDark,
-                    cursorColor = AccentTeal,
-                    focusedLabelColor = AccentTeal,
-                    unfocusedLabelColor = TextSecondary
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedBorderColor = SoftOrange,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    cursorColor = SoftOrange,
+                    focusedLabelColor = SoftOrange,
+                    unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                 )
             )
 
@@ -99,9 +104,9 @@ fun GridConfigScreen(
     }
 }
 @Preview(
-    name = "Grid Config – Dark",
+    name = "Grid Config – LIGHT",
     showBackground = true,
-    backgroundColor = 0xFF0E0F12,
+    backgroundColor = 0xFFFFFFFF,
     device = Devices.PIXEL_6
 )
 @Composable
