@@ -8,6 +8,7 @@
     import androidx.compose.foundation.lazy.LazyRow
     import androidx.compose.foundation.rememberScrollState
     import androidx.compose.foundation.verticalScroll
+    import androidx.compose.material3.Button
     import androidx.compose.material3.CenterAlignedTopAppBar
     import androidx.compose.material3.ExperimentalMaterial3Api
     import androidx.compose.material3.MaterialTheme
@@ -25,47 +26,72 @@
         rows: Int,
         cols: Int,
         modifier: Modifier = Modifier,
+        activeSet: MutableSet<Int> = remember { mutableStateSetOf<Int>() },
         onCellClick: (Int, Boolean) -> Unit
     ) {
-        val activeSet = remember { mutableStateSetOf<Int>() }
 
         val verticalScroll = rememberScrollState()
         val horizontalScroll = rememberScrollState()
 
-        Box(
+        Column(
             modifier = modifier
                 .fillMaxSize()
-                .verticalScroll(verticalScroll)
-                .horizontalScroll(horizontalScroll)
-                .padding(16.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column {
-                repeat(rows) { r ->
-                    Row {
-                        repeat(cols) { c ->
-                            val index = r * cols + c
-                            val isOn = index in activeSet
 
-                            GridDot(
-                                isActive = isOn,
-                                onClick = {
-                                    val newState = !isOn
-                                    if (newState) activeSet.add(index)
-                                    else activeSet.remove(index)
+            // 🔥 SCROLLABLE GRID AREA
+            Box(
+                modifier = Modifier
+                    .weight(1f) // keeps grid centered vertically
+                    .verticalScroll(verticalScroll)
+                    .horizontalScroll(horizontalScroll),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    repeat(rows) { r ->
+                        Row {
+                            repeat(cols) { c ->
+                                val index = r * cols + c
+                                val isOn = index in activeSet
 
-                                    onCellClick(index, newState)
-                                }
-                            )
+                                GridDot(
+                                    isActive = isOn,
+                                    onClick = {
+                                        val newState = !isOn
 
-                            Spacer(modifier = Modifier.width(8.dp))
+                                        if (newState) activeSet.add(index)
+                                        else activeSet.remove(index)
+
+                                        onCellClick(index, newState)
+                                    }
+                                )
+
+                                Spacer(Modifier.width(8.dp))
+                            }
                         }
+                        Spacer(Modifier.height(8.dp))
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+
+            Button(
+                onClick = {
+                    activeSet.clear()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Text("Reset Grid")
             }
         }
     }
-
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Preview(
@@ -87,11 +113,48 @@
                     }
                 ) { innerPadding ->
                     GridScreen(
-                        rows = 20,
+                        rows =20,
                         cols = 6,
                         modifier = Modifier.padding(innerPadding)
                     ) { _, _ -> }
                 }
             }
+        }
+    }
+
+
+    @Preview(name = "Grid Selected State", showBackground = true, backgroundColor = 0xFF000000)
+    @Composable
+    fun GridScreenSelectedPreview() {
+        VIISARTheme {
+
+            val state = remember {
+                mutableStateSetOf(
+                    0, 1, 2,
+                    7, 8,
+                    15
+                )
+            }
+
+            GridScreen(
+                rows = 6,
+                cols = 6,
+                activeSet = state
+            ) { _, _ -> }
+        }
+    }
+
+
+    @Preview(name = "After Reset", showBackground = true, backgroundColor = 0xFF000000)
+    @Composable
+    fun GridScreenResetPreview() {
+        VIISARTheme {
+            val state = remember { mutableStateSetOf<Int>() } // empty
+
+            GridScreen(
+                rows = 6,
+                cols = 6,
+                activeSet = state
+            ) { _, _ -> }
         }
     }
