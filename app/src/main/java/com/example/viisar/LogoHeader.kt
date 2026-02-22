@@ -18,7 +18,7 @@ fun LogoHeader() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.viisar_logo),
+            painter = painterResource(id = R.drawable.viisar_logogi),
             contentDescription = "VIISAR Logo",
             modifier = Modifier
                 .height(60.dp)   // 🔥 control si
